@@ -18,7 +18,10 @@
         </activity>
         <activity
             android:name=".DomesticUserActivity"
-            android:label="@string/title_activity_domestic_user"></activity>
+            android:label="@string/title_activity_domestic_user" />
+        <activity
+            android:name=".IndustrialUserActivity"
+            android:label="@string/title_activity_industrial_user"></activity>
     </application>
 
 </manifest>
