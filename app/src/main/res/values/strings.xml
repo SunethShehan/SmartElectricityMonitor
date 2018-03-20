@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">SmartElectricityMonitor</string>
-    <string name="title_activity_domestic_user">DomesticUserActivity</string>
+    <string name="app_name">Smart Electricity Monitor</string>
+    <string name="title_activity_domestic_user">Domestic</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_industrial_user">Industrial</string>
 </resources>
