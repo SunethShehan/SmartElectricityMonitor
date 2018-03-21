@@ -23,6 +23,7 @@ public class DomesticUserActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                     case R.id.navigation_home:
                     {
+
                         return true;
                     }
                     case R.id.navigation_dashboard:
@@ -55,7 +56,7 @@ public class DomesticUserActivity extends AppCompatActivity {
 
         ProfileFragment profileFragment = new ProfileFragment();
 
-        //transaction.add(R.id.content,profileFragment).commit();
+        transaction.add(R.id.content,profileFragment).commit();
 
     }
 
