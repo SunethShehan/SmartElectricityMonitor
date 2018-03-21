@@ -24,6 +24,8 @@ public class DomesticUserActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                     {
                         // Test Commit
+
+
                         return true;
                     }
                     case R.id.navigation_dashboard:
