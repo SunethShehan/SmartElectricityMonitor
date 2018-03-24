@@ -8,26 +8,45 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button btnLogin;
+    Button btnLogin , btnUserRegistration;
+    Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Should be redirect to the Dashboard
+        // Initialize
         btnLogin = (Button)findViewById(R.id.btnLogin);
+        btnUserRegistration  = (Button)findViewById(R.id.btnUserRegistration);
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // Redirect to the Domestic User Activity
-                Intent intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+                intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
                 startActivity(intent);
 
 
             }
         });
+
+
+        btnUserRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                intent = new Intent(LoginActivity.this, UserRegistrationActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
 
 
 

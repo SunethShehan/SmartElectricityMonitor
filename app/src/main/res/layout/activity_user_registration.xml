@@ -7,7 +7,7 @@
     tools:context="mycompany.smartelectricitymonitor.UserRegistrationActivity">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/txtLName"
         android:layout_width="274dp"
         android:layout_height="41dp"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.145" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/txtTelephone"
         android:layout_width="273dp"
         android:layout_height="41dp"
         android:layout_marginBottom="8dp"
@@ -41,13 +41,13 @@
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.507" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/txtUnitNo"
         android:layout_width="274dp"
         android:layout_height="38dp"
         android:layout_marginBottom="8dp"
@@ -67,7 +67,7 @@
         app:layout_constraintVertical_bias="0.599" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/txtFName"
         android:layout_width="273dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -82,11 +82,11 @@
         android:inputType="textPersonName"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.017"
-        app:layout_constraintHorizontal_bias="0.507" />
+        app:layout_constraintVertical_bias="0.017" />
 
     <Button
         android:id="@+id/btnClear"
@@ -125,14 +125,13 @@
         android:layout_marginEnd="8dp" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spnUserType"
         android:layout_width="277dp"
         android:layout_height="38dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:prompt="Type"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -141,7 +140,7 @@
         app:layout_constraintVertical_bias="0.371" />
 
     <EditText
-        android:id="@+id/editText9"
+        android:id="@+id/txtAddress"
         android:layout_width="278dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -158,7 +157,7 @@
         app:layout_constraintVertical_bias="0.258" />
 
     <EditText
-        android:id="@+id/editText10"
+        android:id="@+id/txtConfirmPassword"
         android:layout_width="274dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
@@ -175,7 +174,7 @@
         app:layout_constraintVertical_bias="0.824" />
 
     <EditText
-        android:id="@+id/editText11"
+        android:id="@+id/txtPassword"
         android:layout_width="274dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"

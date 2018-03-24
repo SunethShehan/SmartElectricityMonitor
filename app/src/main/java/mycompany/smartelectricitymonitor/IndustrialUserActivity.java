@@ -24,13 +24,13 @@ public class IndustrialUserActivity extends AppCompatActivity {
 
                     case R.id.navigation_home:
                     {
-
+                        // Home fragment
                         return true;
                     }
 
                     case R.id.navigation_dashboard:
                     {
-
+                        // Dashboard fragment
                         return true;
                     }
                     case R.id.navigation_profile:

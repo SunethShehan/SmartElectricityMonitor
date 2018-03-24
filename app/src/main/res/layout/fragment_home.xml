@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="0.658" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/lblDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -56,7 +56,7 @@
         app:layout_constraintVertical_bias="0.182" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/lblBillAmount"
         android:layout_width="83dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
@@ -66,14 +66,14 @@
         android:text="Rs. 750"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6"
-        app:layout_constraintHorizontal_bias="0.501" />
+        app:layout_constraintVertical_bias="0.6" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/lblLastMonthUnits"
         android:layout_width="25dp"
         android:layout_height="23dp"
         android:layout_marginBottom="8dp"
@@ -81,16 +81,16 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="91"
-        android:textSize="22sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintHorizontal_bias="0.94"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        app:layout_constraintVertical_bias="0.955" />
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/lblCurrentUnits"
         android:layout_width="25dp"
         android:layout_height="23dp"
         android:layout_marginBottom="8dp"
