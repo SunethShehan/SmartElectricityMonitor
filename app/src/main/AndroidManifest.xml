@@ -21,7 +21,8 @@
             android:label="@string/title_activity_domestic_user" />
         <activity
             android:name=".IndustrialUserActivity"
-            android:label="Industrial User"></activity>
+            android:label="Industrial User" />
+        <activity android:name=".UserRegistrationActivity"></activity>
     </application>
 
 </manifest>
