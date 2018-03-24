@@ -57,7 +57,6 @@ public class DomesticUserActivity extends AppCompatActivity {
         ProfileFragment profileFragment = new ProfileFragment();
 
         //transaction.add(R.id.content,profileFragment).commit();
-
     }
 
 }
