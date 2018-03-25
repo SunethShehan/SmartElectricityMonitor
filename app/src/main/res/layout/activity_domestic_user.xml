@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation"
+        app:menu="@menu/navigation_domestic"
         tools:layout_editor_absoluteY="33dp"
         tools:layout_editor_absoluteX="8dp" />
 

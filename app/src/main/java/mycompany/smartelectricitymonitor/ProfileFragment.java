@@ -1,6 +1,8 @@
 package mycompany.smartelectricitymonitor;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -24,10 +37,6 @@ public class ProfileFragment extends Fragment {
     TextView lblName,lblPremisesNo,lblUserType,lblAddress,lblAccountNo,lblModuleStatus,lblModuleNo,lblPremises;
 
     ImageView iVUserType;
-
-
-
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -117,4 +126,48 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void setProfileDetails()
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        String profileURL = "https://getfeed.azurewebsites.net/api/Employees/";//;+//userName;
+
+
+         StringRequest stringRequest = new StringRequest(Request.Method.GET, profileURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try
+                {
+                    JSONObject json = new JSONObject(response);
+                    //lblUserName.setText(json.getString("user_Name"));
+                   // lblEmpName.setText(WordUtils.capitalize(json.getString("emp_Name")));
+                   // lblEmpDepartment.setText(json.getString("dep_name"));
+
+
+                }
+
+                catch (JSONException je)
+                {
+
+                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT);
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+        requestQueue.add(stringRequest);
+
+
+    }
+
+
 }

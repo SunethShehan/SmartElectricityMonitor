@@ -9,6 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -18,6 +29,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class DashboardFragment extends Fragment {
+
+
+    BarChart chart ;
+    ArrayList<BarEntry> BARENTRY ;
+    ArrayList<String> BarEntryLabels ;
+    BarDataSet Bardataset ;
+    BarData BARDATA ;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,8 +82,36 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        chart = (BarChart) rootView.findViewById(R.id.bcUnits);
+
+        BARENTRY = new ArrayList<>();
+
+        BarEntryLabels = new ArrayList<String>();
+
+        AddValuesToBARENTRY();
+
+        AddValuesToBarEntryLabels();
+
+        Bardataset = new BarDataSet(BARENTRY,"Projects");
+
+        BARDATA = new BarData(Bardataset);
+
+        // New Component for the MPAndroid Chart
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BarEntryLabels));
+
+
+        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        chart.setData(BARDATA);
+
+        chart.animateY(3000);
+
+        chart.getDescription().setText("");
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,4 +152,30 @@ public class DashboardFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void AddValuesToBARENTRY(){
+
+        BARENTRY.add(new BarEntry(0f, 3));
+        BARENTRY.add(new BarEntry(1f, 1));
+        BARENTRY.add(new BarEntry(2f, 2));
+        BARENTRY.add(new BarEntry(3f, 3));
+        BARENTRY.add(new BarEntry(4f, 4));
+        BARENTRY.add(new BarEntry(5f, 5));
+
+    }
+
+    public void AddValuesToBarEntryLabels(){
+
+        BarEntryLabels.add("Jan");
+        BarEntryLabels.add("Feb");
+        BarEntryLabels.add("Mar");
+        BarEntryLabels.add("Apr");
+        BarEntryLabels.add("May");
+        BarEntryLabels.add("Jun");
+
+
+    }
+
+
+
 }

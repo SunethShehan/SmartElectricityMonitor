@@ -1,12 +1,28 @@
 package mycompany.smartelectricitymonitor;
 
 import android.content.Context;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
 
 
 /**
@@ -19,11 +35,7 @@ import android.view.ViewGroup;
  */
 public class HomeFragment extends Fragment {
 
-
-
-
-
-
+    TextView lblDate,lblCurrentUnits,lblBillAmount,lblLastMonthUnits;
 
 
 
@@ -74,7 +86,19 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_home, container, false);
+
+        lblDate = (TextView)rootView.findViewById(R.id.lblDate);
+        lblCurrentUnits = (TextView)rootView.findViewById(R.id.lblCurrentUnits);
+        lblLastMonthUnits = (TextView)rootView.findViewById(R.id.lblLastMonthUnits);
+        lblBillAmount = (TextView)rootView.findViewById(R.id.lblBillAmount);
+
+
+
+        //setDetails();
+
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -115,4 +139,54 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void setDetails()
+    {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        String profileURL = "https://getfeed.azurewebsites.net/api/Employees/";//;+//userName;
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, profileURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try
+                {
+                    JSONObject json = new JSONObject(response);
+                    //lblUserName.setText(json.getString("user_Name"));
+                    // lblEmpName.setText(WordUtils.capitalize(json.getString("emp_Name")));
+                    // lblEmpDepartment.setText(json.getString("dep_name"));
+
+
+                }
+
+                catch (JSONException je)
+                {
+
+                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT);
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+        requestQueue.add(stringRequest);
+
+
+
+
+
+
+
+
+    }
+
 }
