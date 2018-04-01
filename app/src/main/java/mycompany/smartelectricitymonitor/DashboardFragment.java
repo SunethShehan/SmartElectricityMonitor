@@ -101,7 +101,6 @@ public class DashboardFragment extends Fragment {
         // New Component for the MPAndroid Chart
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BarEntryLabels));
 
-
         Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
         chart.setData(BARDATA);
@@ -127,8 +126,8 @@ public class DashboardFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
+        //throw new RuntimeException(context.toString()
+        // + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -176,6 +175,6 @@ public class DashboardFragment extends Fragment {
 
     }
 
-
+    // Are we creating a separate dashboard for the Industrial User?
 
 }

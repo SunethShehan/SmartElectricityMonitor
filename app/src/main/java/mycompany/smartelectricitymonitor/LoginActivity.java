@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Redirect to the Domestic User Activity
-                intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
+                intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
                 startActivity(intent);
 
 

@@ -1,6 +1,7 @@
 package mycompany.smartelectricitymonitor;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
@@ -8,11 +9,23 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class IndustrialUserActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FragmentTransaction transaction;
+
+    //Home
+    //Dashboard
+    //Report
+    //Profile
+
+    HomeFragment homeFragment;
+    DashboardFragment dashboardFragment;
+    ReportsFragment reportsFragment;
+    ProfileFragment profileFragment;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -20,17 +33,23 @@ public class IndustrialUserActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            transaction =  fragmentManager.beginTransaction();
             switch (item.getItemId()){
 
                     case R.id.navigation_home:
                     {
-                        // Home fragment
+                        transaction.replace(R.id.content, homeFragment).commit();
                         return true;
                     }
 
                     case R.id.navigation_dashboard:
                     {
-                        // Dashboard fragment
+                        transaction.replace(R.id.content,dashboardFragment).commit();
+                        return true;
+                    }
+                    case R.id.navigation_reports:
+                    {
+                        transaction.replace(R.id.content,reportsFragment).commit();
                         return true;
                     }
                     case R.id.navigation_profile:
@@ -55,6 +74,14 @@ public class IndustrialUserActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         transaction =  fragmentManager.beginTransaction();
+
+        homeFragment = new HomeFragment();
+        dashboardFragment = new DashboardFragment();
+        reportsFragment = new ReportsFragment();
+        profileFragment = new ProfileFragment();
+
+        transaction.replace(R.id.content, homeFragment).commit();
+
     }
 
 }

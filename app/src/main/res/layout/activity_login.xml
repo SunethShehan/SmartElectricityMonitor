@@ -1,37 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mycompany.smartelectricitymonitor.LoginActivity">
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Premises No :"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.31" />
+    tools:context="mycompany.smartelectricitymonitor.LoginActivity"
+    android:background="@drawable/gradient">
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/btnUserRegistration"
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:background="#11000000"
+        android:drawableLeft="@drawable/ic_action_premises"
         android:ems="10"
+        android:hint=" Premises No"
         android:inputType="textPersonName"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,62 +31,56 @@
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/btnUserRegistration"
+        android:layout_alignStart="@+id/btnLogin"
+        android:layout_below="@+id/editText"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="11dp"
+        android:background="#11000000"
+        android:drawableLeft="@drawable/ic_action_password"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:hint=" Password"
+        android:inputType="textPassword"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.847"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.304" />
+        app:layout_constraintVertical_bias="0.304"
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Password :"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.433" />
+      />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="294dp"
+        android:layout_width="300dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="3dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.839" />
+        app:layout_constraintVertical_bias="0.839"
+        android:layout_above="@+id/btnUserRegistration"
+        android:layout_alignStart="@+id/btnUserRegistration" />
 
     <Button
         android:id="@+id/btnUserRegistration"
-        android:layout_width="295dp"
+        android:layout_width="300dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="43dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -107,4 +89,25 @@
         app:layout_constraintVertical_bias="0.955"
         tools:layout_editor_absoluteY="432dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:srcCompat="@drawable/ic_green_electricity"
+        android:layout_marginTop="54dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp"
+        android:text="Smart Electricity Monitor"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:layout_above="@+id/editText"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

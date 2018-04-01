@@ -180,13 +180,6 @@ public class HomeFragment extends Fragment {
                 });
         requestQueue.add(stringRequest);
 
-
-
-
-
-
-
-
     }
 
 }
