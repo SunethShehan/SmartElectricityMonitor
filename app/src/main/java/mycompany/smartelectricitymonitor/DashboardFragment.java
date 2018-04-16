@@ -177,4 +177,17 @@ public class DashboardFragment extends Fragment {
 
     // Are we creating a separate dashboard for the Industrial User?
 
+    private void getDetails()
+    {
+
+
+
+
+
+
+
+    }
+
+
+
 }

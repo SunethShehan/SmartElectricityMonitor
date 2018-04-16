@@ -24,7 +24,8 @@
         <activity
             android:name=".IndustrialUserActivity"
             android:label="Industrial User" />
-        <activity android:name=".UserRegistrationActivity" />
+        <activity android:name=".UserRegistrationActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".StartActivity"/>
 
     </application>
