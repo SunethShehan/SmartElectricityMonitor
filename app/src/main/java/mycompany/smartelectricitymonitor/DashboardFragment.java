@@ -7,8 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.BarData;
@@ -16,6 +23,10 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -182,9 +193,46 @@ public class DashboardFragment extends Fragment {
 
 
 
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        String chartURL = "https://getfeed.azurewebsites.net/api/Questions/";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, chartURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONArray jsonarr = json.getJSONArray("Question");
+                    for(int i =0 ; i< jsonarr.length(); i++){
+
+                        JSONObject jsonObject = jsonarr.getJSONObject(i);
+                        //setAdapterValues(jsonObject.getString("question_Title"));
+
+                    }
+
+                    Toast.makeText(getContext(), "on the Response", Toast.LENGTH_SHORT).show();
 
 
 
+
+                } catch (JSONException je) {
+
+                    Toast.makeText(getContext(),"JSON Exception", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Toast.makeText(getContext(), " Volley Error", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+        requestQueue.add(stringRequest);
 
     }
 
