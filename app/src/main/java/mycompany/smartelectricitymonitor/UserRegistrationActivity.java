@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -30,6 +32,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class UserRegistrationActivity extends Activity {
 
@@ -60,6 +63,7 @@ public class UserRegistrationActivity extends Activity {
         btnClear = (Button) findViewById(R.id.btnClear);
 
 
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +71,12 @@ public class UserRegistrationActivity extends Activity {
 
                 //saveUser();
                 //setNotification();
+
+                // Toast.makeText(getApplicationContext(),"Clicked",Toast.LENGTH_SHORT).show();
+
+                WebAPITask webAPITask = new WebAPITask();
+                webAPITask.execute();
+
 
             }
         });
@@ -82,9 +92,6 @@ public class UserRegistrationActivity extends Activity {
 
     public void saveUser()
     {
-
-
-
 
        String saveUrl = "";
 
@@ -171,5 +178,32 @@ public class UserRegistrationActivity extends Activity {
 
     }
 
+    private class WebAPITask extends AsyncTask<Void,Void,String>
+    {
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+
+            return "Completed";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+           Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+
+
+        }
+
+
+    }
+
+
+
+
+
 
 }
+
+
