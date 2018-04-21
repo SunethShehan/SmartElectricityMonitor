@@ -191,7 +191,7 @@ public class UserRegistrationActivity extends Activity {
         @Override
         protected void onPostExecute(String s) {
 
-           Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
 
 
         }
