@@ -8,7 +8,7 @@
     android:background="@drawable/gradient">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/txtPremisesNo"
         android:layout_width="220dp"
         android:layout_height="40dp"
         android:layout_alignEnd="@+id/btnUserRegistration"
@@ -30,12 +30,12 @@
         app:layout_constraintVertical_bias="0.431" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/txtPassword"
         android:layout_width="220dp"
         android:layout_height="40dp"
         android:layout_alignEnd="@+id/btnUserRegistration"
         android:layout_alignStart="@+id/btnLogin"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/txtPremisesNo"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="11dp"
@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.304"
 
-      />
+        />
 
     <Button
         android:id="@+id/btnLogin"
@@ -107,7 +107,7 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold|italic"
-        android:layout_above="@+id/editText"
+        android:layout_above="@+id/txtPremisesNo"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
