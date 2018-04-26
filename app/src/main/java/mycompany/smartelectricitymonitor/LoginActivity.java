@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 //
 //                }
 
-                intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+                intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
                 startActivity(intent);
 
             }
@@ -109,7 +109,12 @@ public class LoginActivity extends AppCompatActivity {
                         {
                            if(response.getString("login").equals("true"))
                            {
-                               intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+
+                               Bundle bundle = new Bundle();
+                               bundle.putString("edttext", "From Activity");
+
+
+                               intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
                                startActivity(intent);
                            }
                            else

@@ -14,5 +14,12 @@
         <item>For Business</item>
     </string-array>
 
+    <string-array name="arr_time">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
 
 </resources>

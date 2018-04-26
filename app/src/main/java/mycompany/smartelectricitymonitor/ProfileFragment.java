@@ -1,9 +1,12 @@
 package mycompany.smartelectricitymonitor;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,13 +16,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +40,7 @@ import org.json.JSONObject;
  */
 public class ProfileFragment extends Fragment {
 
-    TextView lblName,lblPremisesNo,lblUserType,lblAddress,lblAccountNo,lblModuleStatus,lblModuleNo,lblPremises;
+    TextView lblName,lblPremisesNo,lblUserType,lblAddress,lblAccountNo,lblModuleStatus,lblModuleNo;
 
     ImageView iVUserType;
 
@@ -78,13 +84,31 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        getProfileDetails();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
+        }
+
+                lblName = (TextView)rootView.findViewById(R.id.lblName);
+                lblPremisesNo = (TextView)rootView.findViewById(R.id.lblPremisesNo);
+                lblUserType = (TextView)rootView.findViewById(R.id.lblUserType);
+                lblAddress = (TextView)rootView.findViewById(R.id.lblAddress);
+                lblAccountNo = (TextView)rootView.findViewById(R.id.lblAccountNo);
+                lblModuleStatus = (TextView)rootView.findViewById(R.id.lblModuleStatus);
+                lblModuleNo = (TextView)rootView.findViewById(R.id.lblModuleNo);
+
+
+
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -127,48 +151,87 @@ public class ProfileFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setProfileDetails()
+    public void getProfileDetails()
     {
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        // Check Profile Url Before call
-        String profileURL = "https://getfeed.azurewebsites.net/api/Employees/";//;+//userName;
+        //String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/TEST";
+        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/";
+
+        try {
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getUserUrl,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try
+                            {
+                                JSONArray jsonArray = response.getJSONArray("Userdetail");
+                                setUserDetails(jsonArray.getJSONObject(0));
+
+                            }
+                            catch (JSONException ex)
+                            {
+
+                                Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+
+                            }
 
 
-         StringRequest stringRequest = new StringRequest(Request.Method.GET, profileURL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                try
-                {
-                    JSONObject json = new JSONObject(response);
-                    //lblUserName.setText(json.getString("user_Name"));
-                    // lblEmpName.setText(WordUtils.capitalize(json.getString("emp_Name")));
-                    // lblEmpDepartment.setText(json.getString("dep_name"));
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(),"Volley Error",Toast.LENGTH_SHORT).show();
+                    System.out.println("Error -->>"+error.toString());
 
 
                 }
+            });
 
-                catch (JSONException je)
-                {
+            request.setRetryPolicy(new
 
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT);
-                }
+                    DefaultRetryPolicy(60000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+            Volley.newRequestQueue(getContext()).add(request);
 
-                    }
-                });
-        requestQueue.add(stringRequest);
+        }
+        catch (Exception ex)
+        {
 
+            System.out.print("Exception"+ex.toString());
+
+        }
+    }
+
+
+    private void setUserDetails(JSONObject jsonObject)
+    {
+        try
+        {
+
+            lblName.setText(jsonObject.getString("Name"));
+            //lblPremisesNo.setText(jsonObject.getString("Name"));
+            lblUserType.setText(jsonObject.getString("User_Type"));
+            lblAddress.setText(jsonObject.getString("Address"));
+            lblAccountNo.setText(jsonObject.getString("Account_no"));
+            lblModuleStatus.setText(jsonObject.getString("Health"));
+            lblModuleNo.setText(jsonObject.getString("ModuleId"));
+
+
+
+        }
+        catch (JSONException ex)
+        {
+
+            Toast.makeText(getContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+
+        }
 
     }
+
 
 
 }

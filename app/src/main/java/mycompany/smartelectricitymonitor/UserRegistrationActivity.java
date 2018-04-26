@@ -1,5 +1,6 @@
 package mycompany.smartelectricitymonitor;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -8,8 +9,10 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,13 +39,19 @@ import java.util.Map;
 
 public class UserRegistrationActivity extends Activity {
 
-    EditText txtFName,txtLName,txtAddress,txtTelephone,txtUnitNo,txtPassword,txtConfirmPassword;
+    EditText txtFName,txtLName,txtAddress,txtTelephone,txtUnitNo,txtPassword,txtConfirmPassword,txtPremisesNoReg,txtAccountNo,txtMail;
     Spinner spnUserType;
     Button btnRegister,btnClear;
+
+    String userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
+        }
 
 
         /*Initialize*/
@@ -50,10 +59,15 @@ public class UserRegistrationActivity extends Activity {
         txtFName = (EditText)findViewById(R.id.txtFName);
         txtLName = (EditText)findViewById(R.id.txtLName);
         txtAddress = (EditText)findViewById(R.id.txtAddress);
+        txtPremisesNoReg = (EditText)findViewById(R.id.txtPremisesNo);
+        txtAccountNo = (EditText)findViewById(R.id.txtAccountNo);
         txtTelephone = (EditText)findViewById(R.id.txtTelephone);
         txtUnitNo = (EditText)findViewById(R.id.txtUnitNo);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
-        txtConfirmPassword = (EditText)findViewById(R.id.txtConfirmPassword);
+       // txtConfirmPassword = (EditText)findViewById(R.id.txtConfirmPassword);
+        txtMail = (EditText)findViewById(R.id.txtmail);
+
+
 
         // Spinner
         spnUserType = (Spinner) findViewById(R.id.spnUserType);
@@ -74,9 +88,11 @@ public class UserRegistrationActivity extends Activity {
 
                 // Toast.makeText(getApplicationContext(),"Clicked",Toast.LENGTH_SHORT).show();
 
-                WebAPITask webAPITask = new WebAPITask();
-                webAPITask.execute();
+               // WebAPITask webAPITask = new WebAPITask();
+               // webAPITask.execute();
+              //saveUserTest();
 
+                saveUser();
 
             }
         });
@@ -88,23 +104,55 @@ public class UserRegistrationActivity extends Activity {
             }
         });
 
+
+          spnUserType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            userType =  String.valueOf(spnUserType.getItemAtPosition(position));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public void saveUser()
     {
 
-       String saveUrl = "";
+       String saveUrl = "https://ereaderv10.azurewebsites.net/api/Users";
 
         Map<String, String> param = new HashMap<String, String>();
 
-        // param.put("emp_ID",txtEmpID.getText().toString());
-        // param.put("emp_Name",txtFname.getText().toString()+" "+txtLname.getText().toString());
-        // param.put("user_Name",txtUName.getText().toString());
-        // param.put("email",txtMail.getText().toString());
-        // param.put("pw",txtPassword.getText().toString());
-        // param.put("employee_tp",txtTelephone.getText().toString());
-        // param.put("department_ID",String.valueOf(deptPosition));
-        // param.put("employee_Type",String.valueOf(empType));
+//         param.put("User_Name",txtFName.getText().toString()+txtLName.getText().toString());
+//         param.put("User_Password",txtPassword.getText().toString());
+//         param.put("Premises_no",txtPremisesNoReg.getText().toString());
+//         param.put("Account_no",txtAccountNo.getText().toString());
+//         param.put("Name",txtLName.getText().toString());
+//         param.put("Address",txtAddress.getText().toString());
+//         param.put("Telephone_decimal",txtTelephone.getText().toString());
+//         param.put("Email",txtMail.getText().toString());
+//         param.put("User_Type",userType);
+//         param.put("Unit_Schema_Id","1000");
+//         param.put("ModuleId","1002");
+
+
+
+        param.put("User_Name","TestUser1");
+        param.put("User_Password","abc123");
+        param.put("Premises_no","P-101");
+        param.put("Account_no","2567825253");
+        param.put("Name","TestUser1");
+        param.put("Address","Colombo");
+        param.put("Telephone_decimal","0112456789");
+        param.put("Email","TestMail@mail.com");
+        param.put("User_Type","DomesticUser");
+        param.put("Unit_Schema_Id","1000");
+        param.put("ModuleId","1000");
 
 
         try {
@@ -113,16 +161,15 @@ public class UserRegistrationActivity extends Activity {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Toast.makeText(getApplicationContext(),"Registration Successfully !",Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(UserRegistrationActivity.this, LoginActivity.class);
-                            startActivity(intent);
+                            Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_SHORT).show();
+
 
 
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
                     System.out.println("Error -->>"+error.toString());
 
 
@@ -141,7 +188,7 @@ public class UserRegistrationActivity extends Activity {
         }
         catch (Exception ex)
         {
-            System.out.print("Exception"+ex.toString());
+            Toast.makeText(getApplicationContext(),ex.toString(),Toast.LENGTH_SHORT).show();
 
         }
 
@@ -155,6 +202,87 @@ public class UserRegistrationActivity extends Activity {
 
 
     }
+
+
+    private void saveUserTest()
+    {
+        String saveUrl = "https://ereaderv10.azurewebsites.net/api/Users";
+
+        Map<String, String> param = new HashMap<String, String>();
+
+        param.put("User_Id","TestUser1");
+        param.put("User_Name","TestUser1");
+        param.put("User_Password","abc123");
+        param.put("Premises_no","P-101");
+        param.put("Account_no","10212154236");
+        param.put("Name","TestUser1");
+        param.put("Address","Colombo");
+        param.put("Telephone_decimal","0112536986");
+        param.put("Email","TestMail@mail.com");
+        param.put("User_Type","DomesticUser");
+        param.put("Unit_Schema_Id","1000");
+        param.put("ModuleId","1002");
+
+        try {
+
+            final JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, saveUrl, new JSONObject(param),
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                    System.out.println("Error -->>"+error.toString());
+
+
+                }
+            }){
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    try {
+                        String jsonString = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+
+                        JSONObject result = null;
+
+                        if (jsonString != null && jsonString.length() > 0)
+                            result = new JSONObject(jsonString);
+
+                        return Response.success(result,
+                                HttpHeaderParser.parseCacheHeaders(response));
+                    } catch (UnsupportedEncodingException e) {
+                        return Response.error(new ParseError(e));
+                    } catch (JSONException je) {
+                        return Response.error(new ParseError(je));
+                    }
+
+
+                }
+            };
+
+            request.setRetryPolicy(new
+
+                    DefaultRetryPolicy(60000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+            Volley.newRequestQueue(getApplicationContext()).add(request);
+
+        }
+        catch (Exception ex)
+        {
+            System.out.print("Exception"+ex.toString());
+
+        }
+    }
+
+
     public void setNotification()
     {
         Toast.makeText(getApplicationContext(),"In the Notification Function",Toast.LENGTH_SHORT).show();
@@ -184,15 +312,13 @@ public class UserRegistrationActivity extends Activity {
         @Override
         protected String doInBackground(Void... params) {
 
+            saveUser();
 
-            return "Completed";
+            return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
-
-            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
-
 
         }
 

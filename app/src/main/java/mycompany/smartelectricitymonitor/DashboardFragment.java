@@ -1,12 +1,14 @@
 package mycompany.smartelectricitymonitor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -47,6 +49,8 @@ public class DashboardFragment extends Fragment {
     ArrayList<String> BarEntryLabels ;
     BarDataSet Bardataset ;
     BarData BARDATA ;
+
+    Button btnInfo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,6 +100,7 @@ public class DashboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         chart = (BarChart) rootView.findViewById(R.id.bcUnits);
+        btnInfo = (Button)rootView.findViewById(R.id.btnInfo);
 
         BARENTRY = new ArrayList<>();
 
@@ -120,7 +125,17 @@ public class DashboardFragment extends Fragment {
 
         chart.getDescription().setText("");
 
-        // Inflate the layout for this fragment
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(getActivity(), DeviceDetailsActivity.class);
+                getActivity().startActivity(myIntent);
+            }
+        });
+
+
+
         return rootView;
     }
 

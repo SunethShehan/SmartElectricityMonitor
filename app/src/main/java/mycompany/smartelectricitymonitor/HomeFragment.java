@@ -22,6 +22,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+
 import java.util.Date;
 
 
@@ -93,6 +95,9 @@ public class HomeFragment extends Fragment {
         lblLastMonthUnits = (TextView)rootView.findViewById(R.id.lblLastMonthUnits);
         lblBillAmount = (TextView)rootView.findViewById(R.id.lblBillAmount);
 
+
+
+       lblDate.setText(DateFormat.getDateTimeInstance().format(new Date()));
 
 
         //setDetails();
