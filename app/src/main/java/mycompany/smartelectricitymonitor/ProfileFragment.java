@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +46,8 @@ public class ProfileFragment extends Fragment {
     TextView lblName,lblPremisesNo,lblUserType,lblAddress,lblAccountNo,lblModuleStatus,lblModuleNo;
 
     ImageView iVUserType;
+    SweetAlertDialog pDialog;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,7 +89,7 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        getProfileDetails();
+
     }
 
     @Override
@@ -231,6 +236,38 @@ public class ProfileFragment extends Fragment {
         }
 
     }
+    private class WebAPITask extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try
+            {
+
+                getProfileDetails();
+            }
+            catch (Exception ex)
+            {
+
+                Toast.makeText(getContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+        }
+    }
+
+
+
+
+
+
 
 
 

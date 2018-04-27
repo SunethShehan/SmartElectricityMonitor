@@ -196,12 +196,7 @@ public class UserRegistrationActivity extends Activity {
         //  pDialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
         //  pDialog.setTitleText("Registration Successfully !");
         //  pDialog.show();
-
-
-
-
-
-    }
+}
 
 
     private void saveUserTest()

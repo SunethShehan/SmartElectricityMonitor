@@ -2,6 +2,7 @@ package mycompany.smartelectricitymonitor;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button btnLogin , btnUserRegistration;
@@ -35,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtPremisesNo,txtPassword;
 
     boolean isValidUser = false,loginIsClicked;
+
+    SweetAlertDialog pDialog;
 
 
     @Override
@@ -58,21 +63,21 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-//                if(txtPremisesNo.getText().equals("")||txtPassword.getText().equals(""))
-//                {
-//                    Toast.makeText(getApplicationContext(),"Please Enter the Credentials",Toast.LENGTH_SHORT).show();
-//                }
-//                else
-//                {
-//
-//                        WebAPITask webAPITask = new WebAPITask();
-//                        webAPITask.execute();
-//
-//                }
 
-                intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
-                startActivity(intent);
+                if(txtPremisesNo.getText().equals("")||txtPassword.getText().equals(""))
+                {
+                    Toast.makeText(getApplicationContext(),"Please Enter the Credentials",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+
+                        WebAPITask webAPITask = new WebAPITask();
+                        webAPITask.execute();
+
+                }
+
+//                intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+//                startActivity(intent);
 
             }
         });
@@ -170,13 +175,22 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try
             {
-               getUser();
+                getUser();
             }
             catch (Exception ex)
             {
+
                 Toast.makeText(getApplicationContext(),"Please turn on the Mobile Data",Toast.LENGTH_SHORT).show();
             }
+
             return null;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+            Toast.makeText(getApplicationContext(),"Signing in..",Toast.LENGTH_SHORT).show();
 
         }
 

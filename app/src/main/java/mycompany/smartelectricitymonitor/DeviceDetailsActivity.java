@@ -47,16 +47,10 @@ public class DeviceDetailsActivity extends Activity {
 
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
 
-        DeviceUsageListAdapter deviceUsageListAdapter = new DeviceUsageListAdapter(this,items);
+       // DeviceUsageListAdapter deviceUsageListAdapter = new DeviceUsageListAdapter(this,items);
 
 
-
-
-        lstDevices.setAdapter(deviceUsageListAdapter);
-
-
-
-
+        lstDevices.setAdapter(adapter);
 
     }
 }
