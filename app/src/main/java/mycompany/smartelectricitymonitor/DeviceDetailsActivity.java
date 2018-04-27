@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class DeviceDetailsActivity extends Activity {
 
     ListView lstDevices;
+    ArrayList<String> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +42,17 @@ public class DeviceDetailsActivity extends Activity {
         for(int i=0;i<values.length;i++)
         {
             list.add(values[i]);
+            //items.add();
         }
 
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
 
-        lstDevices.setAdapter(adapter);
+        DeviceUsageListAdapter deviceUsageListAdapter = new DeviceUsageListAdapter(this,items);
+
+
+
+
+        lstDevices.setAdapter(deviceUsageListAdapter);
 
 
 
