@@ -138,7 +138,7 @@
         android:layout_marginEnd="8dp" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spnTime"
         android:layout_width="182dp"
         android:layout_height="29dp"
         android:layout_marginBottom="8dp"

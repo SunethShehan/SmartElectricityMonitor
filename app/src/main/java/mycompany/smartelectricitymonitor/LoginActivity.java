@@ -76,8 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
 
-//                intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
-//                startActivity(intent);
+               // intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+               // startActivity(intent);
 
             }
         });
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
        //String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/TEST";
-        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText()+"/"+txtPassword.getText();
+        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText().toString()+"/"+txtPassword.getText().toString();
 
         try {
 
@@ -115,13 +115,22 @@ public class LoginActivity extends AppCompatActivity {
                            if(response.getString("login").equals("true"))
                            {
 
-                               Bundle bundle = new Bundle();
-                               bundle.putString("edttext", "From Activity");
+                               if(response.getString("User_Type").equals("Domestic")) {
+                                   intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
+                                   intent.putExtra("userName",txtPremisesNo.getText().toString().trim());
+                                   startActivity(intent);
 
 
-                               intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
-                               startActivity(intent);
+                               }
+                               else
+                                   {
+                                       intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+                                       startActivity(intent);
+                                   }
+
                            }
+
+
                            else
                            {
                                Toast.makeText(getApplicationContext(),"Please Check the Credentials",Toast.LENGTH_SHORT).show();

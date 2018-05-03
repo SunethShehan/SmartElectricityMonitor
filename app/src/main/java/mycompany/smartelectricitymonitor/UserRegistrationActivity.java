@@ -64,7 +64,7 @@ public class UserRegistrationActivity extends Activity {
         txtTelephone = (EditText)findViewById(R.id.txtTelephone);
         txtUnitNo = (EditText)findViewById(R.id.txtUnitNo);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
-       // txtConfirmPassword = (EditText)findViewById(R.id.txtConfirmPassword);
+
         txtMail = (EditText)findViewById(R.id.txtmail);
 
 
@@ -88,11 +88,12 @@ public class UserRegistrationActivity extends Activity {
 
                 // Toast.makeText(getApplicationContext(),"Clicked",Toast.LENGTH_SHORT).show();
 
-               // WebAPITask webAPITask = new WebAPITask();
-               // webAPITask.execute();
-              //saveUserTest();
+                //WebAPITask webAPITask = new WebAPITask();
+                //webAPITask.execute();
 
-                saveUser();
+               //saveUserTest();
+
+               saveUser();
 
             }
         });
@@ -124,10 +125,12 @@ public class UserRegistrationActivity extends Activity {
     public void saveUser()
     {
 
-       String saveUrl = "https://ereaderv10.azurewebsites.net/api/Users";
+
+
+       String saveUrl = "https://ereaderv10.azurewebsites.net/api/Users/";
 
         Map<String, String> param = new HashMap<String, String>();
-
+//
 //         param.put("User_Name",txtFName.getText().toString()+txtLName.getText().toString());
 //         param.put("User_Password",txtPassword.getText().toString());
 //         param.put("Premises_no",txtPremisesNoReg.getText().toString());
@@ -136,21 +139,21 @@ public class UserRegistrationActivity extends Activity {
 //         param.put("Address",txtAddress.getText().toString());
 //         param.put("Telephone_decimal",txtTelephone.getText().toString());
 //         param.put("Email",txtMail.getText().toString());
-//         param.put("User_Type",userType);
-//         param.put("Unit_Schema_Id","1000");
+//         param.put("User_Type","Domestic");
+//         param.put("Unit_Schema_Id","1001");
 //         param.put("ModuleId","1002");
 
 
 
-        param.put("User_Name","TestUser1");
-        param.put("User_Password","abc123");
-        param.put("Premises_no","P-101");
-        param.put("Account_no","2567825253");
-        param.put("Name","TestUser1");
+        param.put("User_Name","TestUser6");
+        param.put("User_Password","123");
+        param.put("Premises_no","P-109");
+        param.put("Account_no","256478g2953");
+        param.put("Name","TestUser6");
         param.put("Address","Colombo");
-        param.put("Telephone_decimal","0112456789");
+        param.put("Telephone_decimal","test");
         param.put("Email","TestMail@mail.com");
-        param.put("User_Type","DomesticUser");
+        param.put("User_Type","Domestic");
         param.put("Unit_Schema_Id","1000");
         param.put("ModuleId","1000");
 
@@ -192,6 +195,8 @@ public class UserRegistrationActivity extends Activity {
 
         }
 
+        //Toast.makeText(getApplicationContext(),param.toString(),Toast.LENGTH_SHORT).show();
+
         //  pDialog.cancel();
         //  pDialog = new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE);
         //  pDialog.setTitleText("Registration Successfully !");
@@ -208,15 +213,15 @@ public class UserRegistrationActivity extends Activity {
         param.put("User_Id","TestUser1");
         param.put("User_Name","TestUser1");
         param.put("User_Password","abc123");
-        param.put("Premises_no","P-101");
-        param.put("Account_no","10212154236");
-        param.put("Name","TestUser1");
+        param.put("Premises_no","P-103");
+        param.put("Account_no","10212454236");
+        param.put("Name","TestUser2");
         param.put("Address","Colombo");
-        param.put("Telephone_decimal","0112536986");
+        param.put("Telephone_decimal","01125536986");
         param.put("Email","TestMail@mail.com");
         param.put("User_Type","DomesticUser");
         param.put("Unit_Schema_Id","1000");
-        param.put("ModuleId","1002");
+        param.put("ModuleId","1004");
 
         try {
 
@@ -236,29 +241,7 @@ public class UserRegistrationActivity extends Activity {
 
 
                 }
-            }){
-                @Override
-                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                    try {
-                        String jsonString = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
-
-                        JSONObject result = null;
-
-                        if (jsonString != null && jsonString.length() > 0)
-                            result = new JSONObject(jsonString);
-
-                        return Response.success(result,
-                                HttpHeaderParser.parseCacheHeaders(response));
-                    } catch (UnsupportedEncodingException e) {
-                        return Response.error(new ParseError(e));
-                    } catch (JSONException je) {
-                        return Response.error(new ParseError(je));
-                    }
-
-
-                }
-            };
+            });
 
             request.setRetryPolicy(new
 
@@ -301,21 +284,17 @@ public class UserRegistrationActivity extends Activity {
 
     }
 
-    private class WebAPITask extends AsyncTask<Void,Void,String>
+    private class WebAPITask extends AsyncTask<Void,Void,Void>
     {
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
 
-            saveUser();
+           // saveUser();
 
             return null;
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-
-        }
 
 
     }

@@ -11,10 +11,10 @@
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_dashboard" />
 
-    <item
-    android:id="@+id/navigation_reports"
-    android:icon="@drawable/ic_show_chart_black_24dp"
-    android:title="Reports" />
+    <!--<item-->
+    <!--android:id="@+id/navigation_reports"-->
+    <!--android:icon="@drawable/ic_show_chart_black_24dp"-->
+    <!--android:title="Reports" />-->
 
     <item
         android:id="@+id/navigation_profile"

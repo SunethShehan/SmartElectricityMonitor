@@ -1,9 +1,12 @@
 package mycompany.smartelectricitymonitor;
 
+import android.Manifest;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,17 +15,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+
 
 import java.util.Date;
 
@@ -89,18 +96,31 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_home, container, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
+        }
+
 
         lblDate = (TextView)rootView.findViewById(R.id.lblDate);
         lblCurrentUnits = (TextView)rootView.findViewById(R.id.lblCurrentUnits);
         lblLastMonthUnits = (TextView)rootView.findViewById(R.id.lblLastMonthUnits);
         lblBillAmount = (TextView)rootView.findViewById(R.id.lblBillAmount);
 
-
-
        lblDate.setText(DateFormat.getDateTimeInstance().format(new Date()));
-
+        Date myDate = new Date();
+       //Toast.makeText(getContext(),new SimpleDateFormat("yyyy-MM-dd").format(myDate),Toast.LENGTH_SHORT).show(); ;
 
         //setDetails();
+
+        //getWeeklyDetails();
+
+       // getMonthlyDetails();
+
+        //getMonthlyUnits();
+
+
+        WebAPITask webAPITask = new WebAPITask();
+        webAPITask.execute();
 
 
         return rootView;
@@ -145,15 +165,19 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setDetails()
+    private void getDailyDetails()
     {
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-
-        String profileURL = "https://getfeed.azurewebsites.net/api/Employees/";//;+//userName;
+        // Send the UserID and Date
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, profileURL, new Response.Listener<String>() {
+      RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+
+        String meterURL = "http://ereaderv10.azurewebsites.net/api/Meters/P-101/5/4";
+        //String meterURL = "https://ereaderv10.azurewebsites.net/api/Meters/"+"premisesNo";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, meterURL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -186,5 +210,182 @@ public class HomeFragment extends Fragment {
         requestQueue.add(stringRequest);
 
     }
+
+
+    private void getMonthlyDetails()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getFirstDayOfWeek());
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Toast.makeText(getContext(), simpleDateFormat.format(cal.getTime()),Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+
+
+    // Check this function before call
+    private void getYearlyDetails()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DATE,1);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+
+
+
+    }
+
+    private void getMonthlyUnits()
+    {
+        String getMonthlyUnitsUrl = "http://ereaderv10.azurewebsites.net/api/Meters/P-101/5/4";
+        //String getMonthlyUnitsUrl = "http://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo+"/5/4";
+
+
+        try {
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getMonthlyUnitsUrl,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try
+                            {
+                                JSONArray jsonArray = response.getJSONArray("usagedetail");
+                                JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                               // Toast.makeText(getContext(),jsonObject.getString("monthunits"),Toast.LENGTH_SHORT).show();
+                                lblCurrentUnits.setText(jsonObject.getString("monthunits").toString());
+
+                                if(Integer.parseInt(jsonObject.getString("monthunits").toString())>180)
+                                {
+                                    double val = 45;
+
+                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
+
+                                    lblBillAmount.setText(String.valueOf(result));
+
+                                }
+                                else if(Integer.parseInt(jsonObject.getString("monthunits").toString())>120)
+                                {
+                                    double val = 30;
+
+                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
+
+                                    lblBillAmount.setText(String.valueOf(result));
+
+
+
+                                }
+                                 else if(Integer.parseInt(jsonObject.getString("monthunits").toString())>90)
+                                {
+                                    double val = 18;
+
+                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
+
+                                    lblBillAmount.setText(String.valueOf(result));
+
+
+
+                                }
+                                 else
+                                {
+                                    double val = 8;
+
+                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
+
+                                    lblBillAmount.setText(String.valueOf(result));
+
+
+
+                                }
+
+
+
+                            }
+                            catch (JSONException ex)
+                            {
+
+                                Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                    System.out.println("Error -->>"+error.toString());
+
+
+                }
+            });
+
+            request.setRetryPolicy(new
+
+                    DefaultRetryPolicy(60000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+            Volley.newRequestQueue(getContext()).add(request);
+
+        }
+        catch (Exception ex)
+        {
+
+            System.out.print("Exception"+ex.toString());
+
+        }
+
+
+
+    }
+
+    private class WebAPITask extends AsyncTask<Void,Void,Void>
+    {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            try
+            {
+
+                getMonthlyUnits();
+            }
+            catch (Exception ex)
+            {
+
+                Toast.makeText(getContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+        }
+    }
+
+
+
+
+
 
 }

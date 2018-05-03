@@ -32,6 +32,7 @@ public class DomesticUserActivity extends AppCompatActivity {
     DashboardFragment dashboardFragment;
     ProfileFragment profileFragment;
 
+    Bundle extra;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,6 +56,7 @@ public class DomesticUserActivity extends AppCompatActivity {
                     }
                     case R.id.navigation_profile:
                     {
+                        profileFragment.setArguments(extra);
                         transaction.replace(R.id.content, profileFragment).commit();
                         return true;
                     }
@@ -88,6 +90,13 @@ public class DomesticUserActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
 
         transaction.add(R.id.content,homeFragment).commit();
+
+        //extra = getIntent().getExtras();
+       // extra.putString("premisesNo",extra.getString("premisesNo"));
+
+        extra = getIntent().getExtras();
+        extra.putString("empID",extra.getString("premisesNo"));
+
 
     }
 

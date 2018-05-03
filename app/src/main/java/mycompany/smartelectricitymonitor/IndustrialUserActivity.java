@@ -26,6 +26,8 @@ public class IndustrialUserActivity extends AppCompatActivity {
     ReportsFragment reportsFragment;
     ProfileFragment profileFragment;
 
+    Bundle extra;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -47,13 +49,14 @@ public class IndustrialUserActivity extends AppCompatActivity {
                         transaction.replace(R.id.content,dashboardFragment).commit();
                         return true;
                     }
-                    case R.id.navigation_reports:
-                    {
-                        transaction.replace(R.id.content,reportsFragment).commit();
-                        return true;
-                    }
+//                    case R.id.navigation_reports:
+//                    {
+//                        transaction.replace(R.id.content,reportsFragment).commit();
+//                        return true;
+//                    }
                     case R.id.navigation_profile:
                     {
+                        profileFragment.setArguments(extra);
                         transaction.replace(R.id.content, new ProfileFragment()).commit();
                         return true;
                     }
@@ -81,6 +84,9 @@ public class IndustrialUserActivity extends AppCompatActivity {
         profileFragment = new ProfileFragment();
 
         transaction.replace(R.id.content, homeFragment).commit();
+
+        extra = getIntent().getExtras();
+        extra.putString("premisesNo",extra.getString("premisesNo"));
 
     }
 

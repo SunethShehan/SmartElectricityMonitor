@@ -1,21 +1,29 @@
 package mycompany.smartelectricitymonitor;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.BarChart;
@@ -51,6 +59,8 @@ public class DashboardFragment extends Fragment {
     BarData BARDATA ;
 
     Button btnInfo;
+
+    Spinner spnTime;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -99,8 +109,14 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
+        }
+
         chart = (BarChart) rootView.findViewById(R.id.bcUnits);
         btnInfo = (Button)rootView.findViewById(R.id.btnInfo);
+        spnTime = (Spinner)rootView.findViewById(R.id.spnTime);
 
         BARENTRY = new ArrayList<>();
 
@@ -134,7 +150,17 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        spnTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               // getspnTime(String.valueOf(spnTime.getItemAtPosition(position)));
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         return rootView;
     }
@@ -251,6 +277,94 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    private void getspnTime(String selectedItem)
+    {
 
+        if(selectedItem.toString().equals("Daily"))
+        {
+            String getUsageUrl = "http://ereaderv10.azurewebsites.net/api/Meters/P-101";
+
+            try {
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getUsageUrl,null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try
+                                {
+                                    JSONArray jsonArray = response.getJSONArray("usagedetail");
+                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+
+                                    Toast.makeText(getContext(), jsonObject.getString("units"), Toast.LENGTH_SHORT).show();
+
+                                    //BARENTRY.add(new BarEntry(0f,Integer.parseInt(jsonObject.getString("units"))));
+
+                                    //BarEntryLabels.add("Today");
+
+                                    // set Today Chart Values
+
+
+                                }
+                                catch (JSONException ex)
+                                {
+
+                                    Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(),"Volley Error",Toast.LENGTH_SHORT).show();
+                        System.out.println("Error -->>"+error.toString());
+
+
+                    }
+                });
+
+                request.setRetryPolicy(new
+
+                        DefaultRetryPolicy(60000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+                Volley.newRequestQueue(getContext()).add(request);
+
+            }
+            catch (Exception ex)
+            {
+
+                System.out.print("Exception"+ex.toString());
+
+            }
+
+        }
+
+    }
+
+
+    private void getWeeklyDetails()
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        cal.clear(Calendar.MINUTE);
+        cal.clear(Calendar.SECOND);
+        cal.clear(Calendar.MILLISECOND);
+
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DATE,1);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        // this will return the Starting day of the week
+        //Toast.makeText(getContext(), simpleDateFormat.format(cal.getTime()),Toast.LENGTH_SHORT).show();
+
+        // http://ereaderv10.azurewebsites.net/api/Meters/P-101/5
+
+    }
 
 }

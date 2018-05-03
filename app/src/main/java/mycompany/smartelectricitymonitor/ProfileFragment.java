@@ -48,6 +48,8 @@ public class ProfileFragment extends Fragment {
     ImageView iVUserType;
     SweetAlertDialog pDialog;
 
+    String premisesNo;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,6 +98,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
+
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -112,6 +116,8 @@ public class ProfileFragment extends Fragment {
 
 
 
+        WebAPITask webAPITask = new WebAPITask();
+        webAPITask.execute();
 
         return rootView;
     }
@@ -126,6 +132,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        premisesNo = getArguments().getString("premisesNo");
+        Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
+
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -159,8 +170,11 @@ public class ProfileFragment extends Fragment {
     public void getProfileDetails()
     {
 
-        //String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/TEST";
-        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/";
+      //  String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+premisesNo;
+       // String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+premisesNo;
+
+        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-109/";
+
 
         try {
 
@@ -217,13 +231,13 @@ public class ProfileFragment extends Fragment {
         try
         {
 
-            lblName.setText(jsonObject.getString("Name"));
+            lblName.setText(jsonObject.getString("Name").trim().toString());
             //lblPremisesNo.setText(jsonObject.getString("Name"));
-            lblUserType.setText(jsonObject.getString("User_Type"));
-            lblAddress.setText(jsonObject.getString("Address"));
-            lblAccountNo.setText(jsonObject.getString("Account_no"));
-            lblModuleStatus.setText(jsonObject.getString("Health"));
-            lblModuleNo.setText(jsonObject.getString("ModuleId"));
+            lblUserType.setText(jsonObject.getString("User_Type").trim().toString());
+            lblAddress.setText(jsonObject.getString("Address").trim().toString());
+            lblAccountNo.setText(jsonObject.getString("Account_no").trim().toString());
+            lblModuleStatus.setText(jsonObject.getString("Health").trim().toString());
+            lblModuleNo.setText(jsonObject.getString("ModuleId").trim().toString());
 
 
 
