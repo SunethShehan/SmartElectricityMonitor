@@ -45,7 +45,7 @@ public class DomesticUserActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                     case R.id.navigation_home:
                     {
-
+                        homeFragment.setArguments(extra);
                         transaction.replace(R.id.content, homeFragment).commit();
                         return true;
                     }
@@ -77,6 +77,8 @@ public class DomesticUserActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
         }
 
+        extra = getIntent().getExtras();
+        extra.putString("premisesNo",extra.getString("premisesNo"));
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -89,14 +91,15 @@ public class DomesticUserActivity extends AppCompatActivity {
         dashboardFragment = new DashboardFragment();
         profileFragment = new ProfileFragment();
 
+        homeFragment.setArguments(extra);
         transaction.add(R.id.content,homeFragment).commit();
 
         //extra = getIntent().getExtras();
        // extra.putString("premisesNo",extra.getString("premisesNo"));
 
-        extra = getIntent().getExtras();
-        extra.putString("empID",extra.getString("premisesNo"));
 
+
+        //Toast.makeText(getApplicationContext(),extra.getString("premisesNo"), Toast.LENGTH_SHORT).show();
 
     }
 

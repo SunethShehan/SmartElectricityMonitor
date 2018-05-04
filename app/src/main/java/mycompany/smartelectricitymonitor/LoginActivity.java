@@ -76,8 +76,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
 
-               // intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
-               // startActivity(intent);
+//                intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
+//                startActivity(intent);
 
             }
         });
@@ -101,15 +101,16 @@ public class LoginActivity extends AppCompatActivity {
     {
 
 
-       //String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-100/TEST";
-        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText().toString()+"/"+txtPassword.getText().toString();
+       String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-108/123";
+        //String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText().toString()+"/"+txtPassword.getText().toString();
 
         try {
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getUserUrl,null,
+             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getUserUrl,null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+
                         try
                         {
                            if(response.getString("login").equals("true"))
@@ -117,7 +118,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                if(response.getString("User_Type").equals("Domestic")) {
                                    intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
-                                   intent.putExtra("userName",txtPremisesNo.getText().toString().trim());
+                                 //  intent.putExtra("userName",txtPremisesNo.getText().toString().trim());
+                                   intent.putExtra("premisesNo","P-101");
                                    startActivity(intent);
 
 

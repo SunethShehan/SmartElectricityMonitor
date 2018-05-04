@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
 
     TextView lblDate,lblCurrentUnits,lblBillAmount,lblLastMonthUnits;
 
+    private String premisesNo;
 
 
 
@@ -94,11 +95,13 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_home, container, false);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.INTERNET}, 0);
         }
+        // Inflate the layout for this fragment
+        View rootView =  inflater.inflate(R.layout.fragment_home, container, false);
+
 
 
         lblDate = (TextView)rootView.findViewById(R.id.lblDate);
@@ -119,9 +122,10 @@ public class HomeFragment extends Fragment {
         //getMonthlyUnits();
 
 
-        WebAPITask webAPITask = new WebAPITask();
-        webAPITask.execute();
+        //WebAPITask webAPITask = new WebAPITask();
+       // webAPITask.execute();
 
+       // Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
 
         return rootView;
     }
@@ -136,6 +140,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        premisesNo = getArguments().getString("premisesNo");
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -377,10 +383,7 @@ public class HomeFragment extends Fragment {
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
 
-        }
     }
 
 

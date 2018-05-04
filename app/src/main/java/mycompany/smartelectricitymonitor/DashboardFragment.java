@@ -122,11 +122,18 @@ public class DashboardFragment extends Fragment {
 
         BarEntryLabels = new ArrayList<String>();
 
-        AddValuesToBARENTRY();
+       // AddValuesToBARENTRY();
 
-        AddValuesToBarEntryLabels();
+       // AddValuesToBarEntryLabels();
 
-        Bardataset = new BarDataSet(BARENTRY,"Projects");
+
+
+        AddValuesToWeekly();
+        AddValuesToLabelsWeekly();
+
+
+        Bardataset = new BarDataSet(BARENTRY,"Weekly");
+
 
         BARDATA = new BarData(Bardataset);
 
@@ -227,13 +234,53 @@ public class DashboardFragment extends Fragment {
 
     }
 
+
+    // getWeekly Data
+    private void AddValuesToWeekly()
+    {
+        BARENTRY.add(new BarEntry(0, 3));
+        BARENTRY.add(new BarEntry(1, 1));
+        BARENTRY.add(new BarEntry(2, 2));
+        BARENTRY.add(new BarEntry(3, 3));
+
+
+    }
+
+    private void AddValuesToLabelsWeekly()
+    {
+
+        BarEntryLabels.add("1");
+        BarEntryLabels.add("2");
+        BarEntryLabels.add("3");
+        BarEntryLabels.add("4");
+
+
+    }
+
+    // getMonthly Data
+
+    private void AddValuesToMonthly()
+    {
+        BARENTRY.add(new BarEntry(0, 40));
+        BARENTRY.add(new BarEntry(1, 43));
+        BARENTRY.add(new BarEntry(2, 40));
+
+
+    }
+
+    private void AddValuesToLabelMonthly()
+    {
+        BarEntryLabels.add("Jan");
+        BarEntryLabels.add("Feb");
+        BarEntryLabels.add("Mar");
+
+
+    }
+
     // Are we creating a separate dashboard for the Industrial User?
 
     private void getDetails()
     {
-
-
-
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
         String chartURL = "https://getfeed.azurewebsites.net/api/Questions/";
