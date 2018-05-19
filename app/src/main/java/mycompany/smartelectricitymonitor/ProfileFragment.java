@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
+
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -134,7 +134,6 @@ public class ProfileFragment extends Fragment {
         super.onAttach(context);
 
         premisesNo = getArguments().getString("premisesNo");
-        Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
 
 
         if (context instanceof OnFragmentInteractionListener) {
@@ -171,9 +170,9 @@ public class ProfileFragment extends Fragment {
     {
 
       //  String getUSerUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+premisesNo;
-       // String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+premisesNo;
+        //String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+premisesNo;
 
-        String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-109/";
+       String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-109/";
 
 
         try {
@@ -232,8 +231,8 @@ public class ProfileFragment extends Fragment {
         {
 
             lblName.setText(jsonObject.getString("Name").trim().toString());
-            //lblPremisesNo.setText(jsonObject.getString("Name"));
-            lblUserType.setText(jsonObject.getString("User_Type").trim().toString());
+            lblPremisesNo.setText(premisesNo);
+            lblUserType.setText(jsonObject.getString("User_Type").trim().toString()+" User");
             lblAddress.setText(jsonObject.getString("Address").trim().toString());
             lblAccountNo.setText(jsonObject.getString("Account_no").trim().toString());
             lblModuleStatus.setText(jsonObject.getString("Health").trim().toString());

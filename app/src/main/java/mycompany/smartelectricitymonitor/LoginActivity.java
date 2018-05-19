@@ -1,8 +1,11 @@
 package mycompany.smartelectricitymonitor;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     SweetAlertDialog pDialog;
 
 
+
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,20 +64,36 @@ public class LoginActivity extends AppCompatActivity {
         txtPremisesNo = (EditText)findViewById(R.id.txtPremisesNo);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
 
+        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Signing in..");
+        pDialog.setCancelable(false);
+
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(txtPremisesNo.getText().equals("")||txtPassword.getText().equals(""))
+                if(txtPremisesNo.getText().toString().equals("")||txtPassword.getText().toString().equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Please Enter the Credentials",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
+                    if(isNetworkAvailable()) {
+
+                        pDialog.show();
 
                         WebAPITask webAPITask = new WebAPITask();
                         webAPITask.execute();
+                    }
+                    else
+                    {
+                        pDialog.cancel();
+                        Toast.makeText(getApplicationContext(),"Make sure your internet connection is established !",Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
 
@@ -101,8 +122,8 @@ public class LoginActivity extends AppCompatActivity {
     {
 
 
-       String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-108/123";
-        //String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText().toString()+"/"+txtPassword.getText().toString();
+       //String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/P-101/123";
+      String getUserUrl = "https://ereaderv10.azurewebsites.net/api/Users/"+txtPremisesNo.getText().toString()+"/"+txtPassword.getText().toString();
 
         try {
 
@@ -119,7 +140,9 @@ public class LoginActivity extends AppCompatActivity {
                                if(response.getString("User_Type").equals("Domestic")) {
                                    intent = new Intent(LoginActivity.this, DomesticUserActivity.class);
                                  //  intent.putExtra("userName",txtPremisesNo.getText().toString().trim());
-                                   intent.putExtra("premisesNo","P-101");
+                                   intent.putExtra("premisesNo",txtPremisesNo.getText().toString());
+                                   intent.putExtra("isDomestic",true);
+                                   pDialog.cancel();
                                    startActivity(intent);
 
 
@@ -127,22 +150,16 @@ public class LoginActivity extends AppCompatActivity {
                                else
                                    {
                                        intent = new Intent(LoginActivity.this, IndustrialUserActivity.class);
+                                       pDialog.cancel();
                                        startActivity(intent);
                                    }
-
-                           }
-
-
-                           else
-                           {
-                               Toast.makeText(getApplicationContext(),"Please Check the Credentials",Toast.LENGTH_SHORT).show();
 
                            }
 
                         }
                         catch (JSONException ex)
                         {
-
+                            pDialog.cancel();
                             Toast.makeText(getApplicationContext(), ex.toString(), Toast.LENGTH_SHORT).show();
 
                         }
@@ -152,7 +169,8 @@ public class LoginActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(),"Volley Error",Toast.LENGTH_SHORT).show();
+                    pDialog.cancel();
+                    Toast.makeText(getApplicationContext(),"Please Check the Credentials",Toast.LENGTH_SHORT).show();
                     System.out.println("Error -->>"+error.toString());
                     isValidUser = false;
 
@@ -171,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         catch (Exception ex)
         {
-
+            pDialog.cancel();
             System.out.print("Exception"+ex.toString());
 
         }
@@ -205,6 +223,12 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

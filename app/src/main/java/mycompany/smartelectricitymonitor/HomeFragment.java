@@ -1,6 +1,7 @@
 package mycompany.smartelectricitymonitor;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
@@ -32,8 +33,6 @@ import java.text.DateFormat;
 
 
 import java.util.Date;
-
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -44,11 +43,15 @@ import java.util.Date;
  */
 public class HomeFragment extends Fragment {
 
-    TextView lblDate,lblCurrentUnits,lblBillAmount,lblLastMonthUnits;
+    TextView lblDate,lblCurrentUnits,lblBillAmount,lblLastMonthUnits,lblTodayUnits;
 
     private String premisesNo;
 
+    private Boolean isDomestic;
 
+    private Integer usedUnits;
+
+    private int todayUsedUnits;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -108,9 +111,13 @@ public class HomeFragment extends Fragment {
         lblCurrentUnits = (TextView)rootView.findViewById(R.id.lblCurrentUnits);
         lblLastMonthUnits = (TextView)rootView.findViewById(R.id.lblLastMonthUnits);
         lblBillAmount = (TextView)rootView.findViewById(R.id.lblBillAmount);
+        lblTodayUnits = (TextView)rootView.findViewById(R.id.lblTodayUnits);
 
        lblDate.setText(DateFormat.getDateTimeInstance().format(new Date()));
         Date myDate = new Date();
+
+        lblLastMonthUnits.setText("103");
+
        //Toast.makeText(getContext(),new SimpleDateFormat("yyyy-MM-dd").format(myDate),Toast.LENGTH_SHORT).show(); ;
 
         //setDetails();
@@ -122,8 +129,10 @@ public class HomeFragment extends Fragment {
         //getMonthlyUnits();
 
 
-        //WebAPITask webAPITask = new WebAPITask();
-       // webAPITask.execute();
+
+
+        WebAPITask webAPITask = new WebAPITask();
+        webAPITask.execute();
 
        // Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
 
@@ -141,6 +150,9 @@ public class HomeFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         premisesNo = getArguments().getString("premisesNo");
+        isDomestic = getArguments().getBoolean("isDomestic");
+
+
 
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -179,7 +191,7 @@ public class HomeFragment extends Fragment {
 
       RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        String meterURL = "http://ereaderv10.azurewebsites.net/api/Meters/P-101/5/4";
+        String meterURL = "https://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo;
         //String meterURL = "https://ereaderv10.azurewebsites.net/api/Meters/"+"premisesNo";
 
 
@@ -190,9 +202,9 @@ public class HomeFragment extends Fragment {
                 try
                 {
                     JSONObject json = new JSONObject(response);
-                    //lblUserName.setText(json.getString("user_Name"));
-                    // lblEmpName.setText(WordUtils.capitalize(json.getString("emp_Name")));
-                    // lblEmpDepartment.setText(json.getString("dep_name"));
+                    JSONArray jsonArray = json.getJSONArray("usagedetail");
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    todayUsedUnits = jsonObject.getInt("dailyunits");
 
 
                 }
@@ -200,7 +212,7 @@ public class HomeFragment extends Fragment {
                 catch (JSONException je)
                 {
 
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT);
+                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -258,7 +270,7 @@ public class HomeFragment extends Fragment {
 
     private void getMonthlyUnits()
     {
-        String getMonthlyUnitsUrl = "http://ereaderv10.azurewebsites.net/api/Meters/P-101/5/4";
+        String getMonthlyUnitsUrl = "https://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo+"/1/2/3";
         //String getMonthlyUnitsUrl = "http://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo+"/5/4";
 
 
@@ -273,59 +285,27 @@ public class HomeFragment extends Fragment {
                                 JSONArray jsonArray = response.getJSONArray("usagedetail");
                                 JSONObject jsonObject = jsonArray.getJSONObject(0);
 
-                               // Toast.makeText(getContext(),jsonObject.getString("monthunits"),Toast.LENGTH_SHORT).show();
-                                lblCurrentUnits.setText(jsonObject.getString("monthunits").toString());
+                                usedUnits = Integer.parseInt(jsonObject.getString("monthunits").toString());
 
-                                if(Integer.parseInt(jsonObject.getString("monthunits").toString())>180)
+                                lblCurrentUnits.setText(String.valueOf(usedUnits));
+
+
+
+                                if(isDomestic)
                                 {
-                                    double val = 45;
-
-                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
-
-                                    lblBillAmount.setText(String.valueOf(result));
-
+                                    calculateBillDomestic();
                                 }
-                                else if(Integer.parseInt(jsonObject.getString("monthunits").toString())>120)
+                                else
                                 {
-                                    double val = 30;
-
-                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
-
-                                    lblBillAmount.setText(String.valueOf(result));
-
-
-
+                                    calculateBillIndusTrial();
                                 }
-                                 else if(Integer.parseInt(jsonObject.getString("monthunits").toString())>90)
-                                {
-                                    double val = 18;
-
-                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
-
-                                    lblBillAmount.setText(String.valueOf(result));
-
-
-
-                                }
-                                 else
-                                {
-                                    double val = 8;
-
-                                    double result = val*Integer.parseInt(jsonObject.getString("monthunits").toString());
-
-                                    lblBillAmount.setText(String.valueOf(result));
-
-
-
-                                }
-
 
 
                             }
                             catch (JSONException ex)
                             {
 
-                                Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(),"Failed to getting usage data", Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -362,33 +342,147 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private class WebAPITask extends AsyncTask<Void,Void,Void>
+    private void calculateBillDomestic()
+    {
+        double result = 0;
+
+        if(usedUnits>180)
+        {
+            double val = 45  ;
+
+            result = 540+(val*usedUnits);
+
+
+
+        }
+        else if(usedUnits>120)
+        {
+            double val = 32;
+
+            result = 480+(val*usedUnits);
+
+
+
+
+        }
+        else if(usedUnits>90)
+        {
+            double val = 27.75;
+
+            result = 480+(val*usedUnits);
+
+
+        }
+        else if(usedUnits>60)
+        {
+            double val = 10;
+
+            result = 90+(val*usedUnits);
+
+        }
+
+        else
+        {
+
+            double val = 7.85;
+
+            result = (val*usedUnits);
+
+        }
+
+      //  String.format ("%.2f", result);
+
+        lblBillAmount.setText("Rs."+String.format ("%.2f", result));
+
+
+    }
+
+    private void calculateBillIndusTrial()
+    {
+        double result = 0;
+
+        if(usedUnits>300)
+        {
+            double val = 12.20  ;
+
+            result = 600+(val*usedUnits);
+
+
+
+        }
+        else
+        {
+            double val = 10.80;
+
+            result = 600+(val*usedUnits);
+
+        }
+        lblBillAmount.setText("Rs."+String.valueOf(result));
+
+        //Toast.makeText(getContext(),String.valueOf(result),Toast.LENGTH_SHORT).show();
+
+
+
+    }
+
+
+    private class WebAPITask extends AsyncTask<Void,Void,Boolean>
     {
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
 
             try
             {
 
                 getMonthlyUnits();
+                getDailyDetails();
+
+                return true;
+
             }
             catch (Exception ex)
             {
 
                 Toast.makeText(getContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+                return  false;
+            }
+
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+
+            if(aBoolean)
+            {
+                startCountAnimation();
 
             }
 
-            return null;
         }
 
 
     }
 
 
-
-
-
+    // Animated method for show the Daily usage, should be get the daily usage from the web service
+    private void startCountAnimation() {
+        try {
+            ValueAnimator animator = ValueAnimator.ofInt(0, todayUsedUnits);
+            animator.setDuration(3000);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    lblTodayUnits.setText(animation.getAnimatedValue().toString());
+                }
+            });
+            animator.start();
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(getContext(),ex.toString(),Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

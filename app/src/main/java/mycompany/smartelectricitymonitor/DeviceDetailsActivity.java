@@ -21,21 +21,15 @@ public class DeviceDetailsActivity extends Activity {
 
         lstDevices = (ListView)findViewById(R.id.lstDevices);
 
-        String[] values=new String[]{"25\" colour TV",
-                "Ceiling Fan",
-                "Clothes Dryer",
-                "Desktop Computer",
-                "Fridge / Freezer",
-                "Game Console",
-                "Home Air Conditioner",
-                "Iron",
-                "Laptop Computer",
-                "Microwave",
-                "Rice Cooker",
-                "Table Fan",
-                "Vacuum Cleaner",
-                "Washing Machine",
-                "Water Filter and Cooler"};
+        String[] values=new String[]{"25\" colour TV - 20.09 kWh",
+                "Desktop Computer - 6kWh",
+                "Fridge / Freezer - 16.75kWh",
+                "Game Console - 5.79kWh",
+                "Iron - 21.67kWh",
+                "Microwave - 7.5kWh",
+                "Rice Cooker - 2.08kWh",
+                "Vacuum Cleaner - 5.83 kWh",
+                "Washing Machine - 21.6kWh"};
 
 
         ArrayList<String> list = new ArrayList<String>();

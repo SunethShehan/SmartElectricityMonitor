@@ -8,6 +8,7 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,15 @@ public class DashboardFragment extends Fragment {
     Button btnInfo;
 
     Spinner spnTime;
+
+    String premisesNo;
+
+    JSONObject jsOChart;
+
+    float[] arrWeek;
+
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -118,35 +128,9 @@ public class DashboardFragment extends Fragment {
         btnInfo = (Button)rootView.findViewById(R.id.btnInfo);
         spnTime = (Spinner)rootView.findViewById(R.id.spnTime);
 
-        BARENTRY = new ArrayList<>();
-
-        BarEntryLabels = new ArrayList<String>();
-
-       // AddValuesToBARENTRY();
-
-       // AddValuesToBarEntryLabels();
 
 
 
-        AddValuesToWeekly();
-        AddValuesToLabelsWeekly();
-
-
-        Bardataset = new BarDataSet(BARENTRY,"Weekly");
-
-
-        BARDATA = new BarData(Bardataset);
-
-        // New Component for the MPAndroid Chart
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BarEntryLabels));
-
-        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        chart.setData(BARDATA);
-
-        chart.animateY(3000);
-
-        chart.getDescription().setText("");
 
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +144,10 @@ public class DashboardFragment extends Fragment {
         spnTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               // getspnTime(String.valueOf(spnTime.getItemAtPosition(position)));
+                getspnTime(String.valueOf(spnTime.getItemAtPosition(position)));
+               //Toast.makeText(getContext(),String.valueOf(spnTime.getItemAtPosition(position)),Toast.LENGTH_SHORT).show();
+
+
             }
 
             @Override
@@ -182,6 +169,8 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        premisesNo = getArguments().getString("premisesNo");
+
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -235,13 +224,39 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    // getWeekly Data
-    private void AddValuesToWeekly()
+    private void setChartData(float[] array)
     {
-        BARENTRY.add(new BarEntry(0, 3));
-        BARENTRY.add(new BarEntry(1, 1));
-        BARENTRY.add(new BarEntry(2, 2));
-        BARENTRY.add(new BarEntry(3, 3));
+        BARENTRY = new ArrayList<>();
+
+        BarEntryLabels = new ArrayList<String>();
+        AddValuesToWeekly(array);
+        AddValuesToLabelsWeekly();
+
+
+        Bardataset = new BarDataSet(BARENTRY,"Weekly");
+
+        BARDATA = new BarData(Bardataset);
+
+        // New Component for the MPAndroid Chart
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BarEntryLabels));
+
+        Bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        chart.setData(BARDATA);
+
+        chart.animateY(3000);
+
+        chart.getDescription().setText("Used Electricity Units");
+    }
+
+    // getWeekly Data
+    private void AddValuesToWeekly(float[] weeklyData)
+    {
+        BARENTRY.add(new BarEntry(0,weeklyData[0]));
+        BARENTRY.add(new BarEntry(1,weeklyData[1]));
+        BARENTRY.add(new BarEntry(2,weeklyData[2]));
+        BARENTRY.add(new BarEntry(3,weeklyData[3]));
+        BARENTRY.add(new BarEntry(4,weeklyData[4]));
 
 
     }
@@ -249,10 +264,21 @@ public class DashboardFragment extends Fragment {
     private void AddValuesToLabelsWeekly()
     {
 
-        BarEntryLabels.add("1");
-        BarEntryLabels.add("2");
-        BarEntryLabels.add("3");
-        BarEntryLabels.add("4");
+        BarEntryLabels.add(" ");
+        BarEntryLabels.add(" ");
+        BarEntryLabels.add(" ");
+        BarEntryLabels.add(" ");
+        BarEntryLabels.add(" ");
+
+
+    }
+
+    private void ReplaceValuesToWeekly()
+    {
+        BARENTRY.add(new BarEntry(0,3f));
+        BARENTRY.add(new BarEntry(1,0f));
+        BARENTRY.add(new BarEntry(2,0f));
+        BARENTRY.add(new BarEntry(3,0f));
 
 
     }
@@ -283,7 +309,7 @@ public class DashboardFragment extends Fragment {
     {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 
-        String chartURL = "https://getfeed.azurewebsites.net/api/Questions/";
+        String chartURL = "";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, chartURL, new Response.Listener<String>() {
             @Override
@@ -292,7 +318,7 @@ public class DashboardFragment extends Fragment {
 
                 try {
                     JSONObject json = new JSONObject(response);
-                    JSONArray jsonarr = json.getJSONArray("Question");
+                    JSONArray jsonarr = json.getJSONArray("ArrayName");
                     for(int i =0 ; i< jsonarr.length(); i++){
 
                         JSONObject jsonObject = jsonarr.getJSONObject(i);
@@ -307,7 +333,7 @@ public class DashboardFragment extends Fragment {
 
                 } catch (JSONException je) {
 
-                    Toast.makeText(getContext(),"JSON Exception", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"JSON Exception"+je.toString(), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -316,7 +342,7 @@ public class DashboardFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(getContext(), " Volley Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), " Volley Error"+error.toString(), Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -326,10 +352,15 @@ public class DashboardFragment extends Fragment {
 
     private void getspnTime(String selectedItem)
     {
+        //ReplaceValuesToWeekly();
 
-        if(selectedItem.toString().equals("Daily"))
+        arrWeek = new float[5];
+
+        if(selectedItem.toString().equals("Weekly"))
         {
-            String getUsageUrl = "http://ereaderv10.azurewebsites.net/api/Meters/P-101";
+            // Get Weekly Data
+            String getUsageUrl = "https://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo+"/1/2";
+
 
             try {
 
@@ -342,8 +373,29 @@ public class DashboardFragment extends Fragment {
                                     JSONArray jsonArray = response.getJSONArray("usagedetail");
                                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
+                                    arrWeek[0] =  Integer.parseInt(jsonObject.getString("monthunits"));
 
-                                    Toast.makeText(getContext(), jsonObject.getString("units"), Toast.LENGTH_SHORT).show();
+                                    jsonObject = jsonArray.getJSONObject(1);
+
+                                    arrWeek[1] =  Integer.parseInt(jsonObject.getString("monthunits"));
+
+                                    jsonObject = jsonArray.getJSONObject(2);
+
+                                    arrWeek[2] =  Integer.parseInt(jsonObject.getString("monthunits"));
+
+                                    arrWeek[3] = 0;
+                                    arrWeek[4] = 0;
+
+                                    setChartData(arrWeek);
+
+                                   // arrWeek[0] = Float.parseFloat(jsonObject.getString("weekunits"));
+                                   // arrWeek[1] = 0f;
+                                   // arrWeek[2] = 0f;
+                                   // arrWeek[3]= 0f;
+
+
+
+                                    //Toast.makeText(getContext(), jsonObject.getString("weekunits"), Toast.LENGTH_SHORT).show();
 
                                     //BARENTRY.add(new BarEntry(0f,Integer.parseInt(jsonObject.getString("units"))));
 
@@ -358,6 +410,7 @@ public class DashboardFragment extends Fragment {
 
                                     Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
 
+
                                 }
 
 
@@ -365,7 +418,10 @@ public class DashboardFragment extends Fragment {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(),"Volley Error",Toast.LENGTH_SHORT).show();
+
+
+
+                        Toast.makeText(getContext(),"Volley Error"+error.toString(),Toast.LENGTH_SHORT).show();
                         System.out.println("Error -->>"+error.toString());
 
 
@@ -390,6 +446,104 @@ public class DashboardFragment extends Fragment {
             }
 
         }
+        else if(selectedItem.toString().equals("Last Month"))
+        {
+            // Get Data for last month
+            String getUsageUrl = "https://ereaderv10.azurewebsites.net/api/Meters/"+premisesNo+"/1";
+
+
+            try {
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getUsageUrl,null,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try
+                                {
+                                    JSONArray jsonArray = response.getJSONArray("usagedetail");
+                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                                    arrWeek[0] =  Integer.parseInt(jsonObject.getString("weekunits"));
+
+                                    jsonObject = jsonArray.getJSONObject(1);
+
+                                    arrWeek[1] =  Integer.parseInt(jsonObject.getString("weekunits"));
+
+                                    jsonObject = jsonArray.getJSONObject(2);
+
+                                    arrWeek[2] =  Integer.parseInt(jsonObject.getString("weekunits"));
+
+                                    jsonObject = jsonArray.getJSONObject(3);
+
+                                    arrWeek[3] =  Integer.parseInt(jsonObject.getString("weekunits"));
+
+                                    jsonObject = jsonArray.getJSONObject(4);
+
+                                    arrWeek[4] =  Integer.parseInt(jsonObject.getString("weekunits"));
+
+                                    setChartData(arrWeek);
+
+                                    // arrWeek[0] = Float.parseFloat(jsonObject.getString("weekunits"));
+                                    // arrWeek[1] = 0f;
+                                    // arrWeek[2] = 0f;
+                                    // arrWeek[3]= 0f;
+
+
+
+                                    //Toast.makeText(getContext(), jsonObject.getString("weekunits"), Toast.LENGTH_SHORT).show();
+
+                                    //BARENTRY.add(new BarEntry(0f,Integer.parseInt(jsonObject.getString("units"))));
+
+                                    //BarEntryLabels.add("Today");
+
+                                    // set Today Chart Values
+
+
+                                }
+                                catch (JSONException ex)
+                                {
+
+                                    Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+
+
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+
+                        Toast.makeText(getContext(),"Volley Error"+error.toString(),Toast.LENGTH_SHORT).show();
+                        System.out.println("Error -->>"+error.toString());
+
+
+                    }
+                });
+
+                request.setRetryPolicy(new
+
+                        DefaultRetryPolicy(60000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+                Volley.newRequestQueue(getContext()).add(request);
+
+            }
+            catch (Exception ex)
+            {
+
+                System.out.print("Exception"+ex.toString());
+
+            }
+
+
+
+        }
+
 
     }
 

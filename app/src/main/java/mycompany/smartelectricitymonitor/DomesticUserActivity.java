@@ -51,6 +51,7 @@ public class DomesticUserActivity extends AppCompatActivity {
                     }
                     case R.id.navigation_dashboard:
                     {
+                        dashboardFragment.setArguments(extra);
                         transaction.replace(R.id.content, dashboardFragment).commit();
                         return true;
                     }
@@ -79,6 +80,7 @@ public class DomesticUserActivity extends AppCompatActivity {
 
         extra = getIntent().getExtras();
         extra.putString("premisesNo",extra.getString("premisesNo"));
+        extra.putBoolean("isDomestic",extra.getBoolean("isDomestic"));
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
