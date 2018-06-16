@@ -118,7 +118,13 @@ public class HomeFragment extends Fragment {
 
         lblLastMonthUnits.setText("103");
 
-       //Toast.makeText(getContext(),new SimpleDateFormat("yyyy-MM-dd").format(myDate),Toast.LENGTH_SHORT).show(); ;
+        WebAPITask webAPITask = new WebAPITask();
+        webAPITask.execute();
+
+
+
+
+        //Toast.makeText(getContext(),new SimpleDateFormat("yyyy-MM-dd").format(myDate),Toast.LENGTH_SHORT).show(); ;
 
         //setDetails();
 
@@ -131,8 +137,7 @@ public class HomeFragment extends Fragment {
 
 
 
-        WebAPITask webAPITask = new WebAPITask();
-        webAPITask.execute();
+
 
        // Toast.makeText(getContext(),premisesNo,Toast.LENGTH_SHORT).show();
 
@@ -436,8 +441,8 @@ public class HomeFragment extends Fragment {
             {
 
                 getMonthlyUnits();
-                getDailyDetails();
 
+                getDailyDetails();
                 return true;
 
             }
@@ -457,8 +462,8 @@ public class HomeFragment extends Fragment {
 
             if(aBoolean)
             {
-                startCountAnimation();
 
+                startCountAnimation();
             }
 
         }
@@ -471,7 +476,7 @@ public class HomeFragment extends Fragment {
     private void startCountAnimation() {
         try {
             ValueAnimator animator = ValueAnimator.ofInt(0, todayUsedUnits);
-            animator.setDuration(3000);
+            animator.setDuration(1000);
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 public void onAnimationUpdate(ValueAnimator animation) {
                     lblTodayUnits.setText(animation.getAnimatedValue().toString());
